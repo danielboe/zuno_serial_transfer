@@ -2,12 +2,13 @@
 #include "zunoserial.h"
 
 ZUNO_SETUP_SLEEPING_MODE(ZUNO_SLEEPING_MODE_ALWAYS_AWAKE);
-ZUNO_SETUP_CHANNELS(ZUNO_SENSOR_MULTILEVEL_TEMPERATURE(getterTemperature),ZUNO_SENSOR_MULTILEVEL_HUMIDITY(getterHum),ZUNO_SENSOR_MULTILEVEL_MOISTURE(getterFt));
+ZUNO_SETUP_CHANNELS(ZUNO_SENSOR_MULTILEVEL_TEMPERATURE(getterTemperature),ZUNO_SENSOR_MULTILEVEL_HUMIDITY(getterHum),ZUNO_SENSOR_MULTILEVEL_MOISTURE(getterFt),ZUNO_SENSOR_MULTILEVEL(ZUNO_SENSOR_MULTILEVEL_TYPE_DISTANCE, SENSOR_MULTILEVEL_SCALE_PERCENTAGE_VALUE, SENSOR_MULTILEVEL_SIZE_ONE_BYTE, SENSOR_MULTILEVEL_PRECISION_ZERO_DECIMALS, getterUs));
 
 //global values from input
 byte lastTemperatureValue = 256;
 byte lastHumValue = 256;
 byte lastFtValue = 256;
+byte lastUsValue = 256;
 
 //ZUNOSERIAL serialcom(message_use);
 ZUNOSERIAL serialcom;
@@ -37,6 +38,9 @@ void message_use() {
   if (*opts == 'B') {
     lastFtValue = *(vars+0) + 256;
   }
+  if (*opts == 'C') {
+    lastUsValue = *(vars+0) + 256;
+  }
 }
 
 byte getterTemperature(void) {
@@ -47,6 +51,9 @@ byte getterHum(void) {
 }
 byte getterFt(void) {
   return lastFtValue;
+}
+byte getterUs(void) {
+  return lastUsValue;
 }
 
 
