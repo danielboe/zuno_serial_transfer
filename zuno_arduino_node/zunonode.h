@@ -26,4 +26,20 @@ class ZUNONODE {
         
 };
 
+class SENSOR {
+  
+  public:
+  
+    SENSOR(void);
+    bool test_value(int value_index, float * value, float dif); //returns true if value changes to dif
+    bool test_counter(int tests = 100); //returns true if runs number of tests
+    
+  private:
+
+    int _number_of_values;
+    int _counter_tests;
+    float _old_values[4];
+        
+};
+
 #endif

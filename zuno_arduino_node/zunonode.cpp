@@ -56,3 +56,42 @@ void ZUNONODE::clear_values(void) {
   }
   
 }
+
+SENSOR::SENSOR(void) {
+
+  _number_of_values = 4;
+  
+  _counter_tests = 0;
+  for (int i = 0; i < 4; i++) {
+    _old_values[i] = 0;
+  }
+}
+
+bool SENSOR::test_value(int value_index, float * value, float dif) {
+  //Serial.println(sizeof(_old_values));
+  if (value_index > _number_of_values) {
+    value_index = _number_of_values;
+  }
+  
+  if (*value > _old_values[value_index-1] + dif || *value < _old_values[value_index-1] - dif) {
+    _old_values[value_index-1] = *value;
+    _counter_tests = 0;
+    return true;
+  } else {
+    return false;
+  }
+  
+}
+
+bool SENSOR::test_counter(int tests) {
+  
+  if (_counter_tests > tests) {
+    _counter_tests = 0;
+    return true;
+  } else {
+    _counter_tests++;
+    return false;
+  }
+   
+}
+
